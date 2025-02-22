@@ -12,8 +12,6 @@ export const addInterceptors = (store: Store<RootState>) => {
     const token = store.getState().users?.user?.token;
     const headers = config.headers as AxiosHeaders;
     headers.set('Authorization', token);
-
-    console.log(token);
     return config;
   });
 };

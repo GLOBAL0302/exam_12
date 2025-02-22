@@ -3,9 +3,20 @@ import { IGallery, IGalleryMutation, IValidationError } from '../../types';
 import axiosApi from '../../axiosApi.ts';
 import { isAxiosError } from 'axios';
 
+export const fetchCertainGalleries = createAsyncThunk<IGallery[], string>(
+  'Galleries/fetchCertainGalleries',
+  async (userId) => {
+    let response;
+    response = await axiosApi.get(`/galleries?id=${userId}`);
+
+    return response.data;
+  },
+);
+
 export const fetchAllGalleries = createAsyncThunk<IGallery[]>('Galleries/fetchAllGalleries', async () => {
-  const { data } = await axiosApi.get('/galleries');
-  return data;
+  let response;
+  response = await axiosApi.get('/galleries');
+  return response.data;
 });
 
 export const createOneGallery = createAsyncThunk<void, IGalleryMutation, { rejectValue: IValidationError }>(

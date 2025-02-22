@@ -11,6 +11,7 @@ const App = () => {
       <AppToolBar />
       <Routes>
         <Route path="/" element={<Galleries />} />
+        <Route path="/:userId" element={<Galleries />} />
         <Route path="/addGallery" element={<AddGallery />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

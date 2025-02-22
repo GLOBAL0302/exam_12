@@ -7,8 +7,11 @@ import Gallery from '../models/Gallery';
 const galleriesRouter = express.Router();
 
 galleriesRouter.get('/', async (req, res, next) => {
+  const { id } = req.query;
+
   try {
-    const galleries = await Gallery.find().populate('user');
+    let filter = id ? { user: id } : {};
+    const galleries = await Gallery.find(filter).populate('user');
     res.status(200).json(galleries);
   } catch (error) {
     if (error instanceof Error.ValidationError) {

@@ -26,8 +26,6 @@ const UserMenu: React.FC<Props> = ({ user }) => {
     }
   }
 
-  console.log(pic);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
