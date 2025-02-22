@@ -41,3 +41,13 @@ export interface IValidationError {
 export interface IGlobalError {
   error: string;
 }
+
+export interface IGalleryMutation {
+  title: string;
+  image: string | null;
+}
+
+export interface IGallery extends IGalleryMutation {
+  user: IUser;
+  _id: string;
+}
