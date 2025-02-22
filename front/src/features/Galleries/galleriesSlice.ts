@@ -1,6 +1,6 @@
 import { IGallery } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { createOneGallery, fetchAllGalleries, fetchCertainGalleries } from './galleriesThunk.ts';
+import { createOneGallery, deleteCertainGallery, fetchAllGalleries, fetchCertainGalleries } from './galleriesThunk.ts';
 
 interface GalleriesState {
   galleries: IGallery[];
@@ -56,6 +56,17 @@ const galleriesSlice = createSlice({
       })
       .addCase(createOneGallery.rejected, (state) => {
         state.galleriesCreating = false;
+      });
+
+    builder
+      .addCase(deleteCertainGallery.pending, (state) => {
+        state.galleriesDeleting = true;
+      })
+      .addCase(deleteCertainGallery.fulfilled, (state) => {
+        state.galleriesDeleting = false;
+      })
+      .addCase(deleteCertainGallery.rejected, (state) => {
+        state.galleriesDeleting = false;
       });
   },
   selectors: {

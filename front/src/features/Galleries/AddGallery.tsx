@@ -45,7 +45,7 @@ const addGallery = () => {
       >
         <Grid2 container direction={'column'} gap={2} component="form" onSubmit={onSubmit}>
           <Grid2>
-            <TextField fullWidth label="Title" id="title" name="title" onChange={handleEventChange} />
+            <TextField required fullWidth label="Title" id="title" name="title" onChange={handleEventChange} />
           </Grid2>
           <Grid2>
             <FileInput name="image" label="image" onGetFile={onChangeFile} />

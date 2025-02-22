@@ -14,7 +14,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
+import { deleteCertainGallery, fetchAllGalleries, fetchCertainGalleries } from './galleriesThunk.ts';
 import { selectUser } from '../Users/usersSlice.ts';
 
 interface Props {
@@ -26,6 +27,7 @@ const Gallery: React.FC<Props> = ({ gallery }) => {
   const [open, setOpen] = useState(false);
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,6 +35,15 @@ const Gallery: React.FC<Props> = ({ gallery }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const deleteOnClick = async () => {
+    await dispatch(deleteCertainGallery(gallery._id)).unwrap();
+    if (userId) {
+      await dispatch(fetchCertainGalleries(userId));
+    } else {
+      await dispatch(fetchAllGalleries());
+    }
   };
 
   let pic = '';
@@ -44,7 +55,7 @@ const Gallery: React.FC<Props> = ({ gallery }) => {
     <Grid2
       sx={{
         border: '2px solid purple',
-        padding: 1,
+        padding: 2,
         borderRadius: 10,
       }}
     >
@@ -60,9 +71,9 @@ const Gallery: React.FC<Props> = ({ gallery }) => {
           borderRadius: 10,
         }}
       />
-      {user?._id == userId && (
+      {((user && user.role === 'admin') || (user && user._id === userId)) && (
         <Box marginTop={1} textAlign="center">
-          <Button variant="outlined" color="error">
+          <Button onClick={deleteOnClick} variant="outlined" color="error">
             delete
           </Button>
         </Box>
@@ -70,18 +81,21 @@ const Gallery: React.FC<Props> = ({ gallery }) => {
       <Box
         onClick={() => navigate(`/${gallery.user._id}`)}
         sx={{
-          marginTop: 1,
           padding: 1,
           borderRadius: 5,
           border: '2px solid black',
         }}
       >
-        <Typography textAlign="center" component="p" variant="body1">
-          {gallery.title}
-        </Typography>
-        <Typography textAlign="center" component="p" variant="body1">
-          by {gallery.user.displayName}
-        </Typography>
+        {gallery.user && (
+          <>
+            <Typography textAlign="center" component="p" variant="body1">
+              {gallery.title}
+            </Typography>
+            <Typography textAlign="center" component="p" variant="body1">
+              by {gallery.user.displayName}
+            </Typography>
+          </>
+        )}
       </Box>
 
       <Dialog open={open} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">

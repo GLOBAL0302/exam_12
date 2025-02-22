@@ -8,7 +8,7 @@ export const fetchCertainGalleries = createAsyncThunk<IGallery[], string>(
   async (userId) => {
     let response;
     response = await axiosApi.get(`/galleries?id=${userId}`);
-
+    console.log(response.data, 'fetchCertainGalleries');
     return response.data;
   },
 );
@@ -16,8 +16,16 @@ export const fetchCertainGalleries = createAsyncThunk<IGallery[], string>(
 export const fetchAllGalleries = createAsyncThunk<IGallery[]>('Galleries/fetchAllGalleries', async () => {
   let response;
   response = await axiosApi.get('/galleries');
+  console.log(response.data, 'fetchAllGalleries');
   return response.data;
 });
+
+export const deleteCertainGallery = createAsyncThunk<void, string>(
+  'Gallery/deleteCertainGallery',
+  async (galleryId) => {
+    await axiosApi.delete(`/galleries/${galleryId}`);
+  },
+);
 
 export const createOneGallery = createAsyncThunk<void, IGalleryMutation, { rejectValue: IValidationError }>(
   'Galleries/createOneGallery',

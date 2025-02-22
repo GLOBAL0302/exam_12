@@ -18,23 +18,23 @@ const Galleries = () => {
 
   const getAllGalleries = useCallback(async () => {
     if (userId) {
-      await dispatch(fetchCertainGalleries(userId));
+      await dispatch(fetchCertainGalleries(userId)).unwrap();
     } else {
-      await dispatch(fetchAllGalleries());
+      await dispatch(fetchAllGalleries()).unwrap();
     }
   }, [userId]);
 
   useEffect(() => {
     void getAllGalleries();
-  }, [getAllGalleries, userId]);
+  }, [userId, getAllGalleries]);
 
   return (
     <Grid2>
-      {user?._id == userId && (
+      {user && user._id === userId && (
         <Grid2 container>
           <Grid2>
             <Typography variant="h5" component="div">
-              {user?.displayName.toUpperCase()}'s Gallery
+              {user.displayName.toUpperCase()}'s Gallery
             </Typography>
           </Grid2>
           <Grid2 marginLeft="auto">

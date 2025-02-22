@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import User from './models/User';
 import { randomUUID } from 'node:crypto';
+import Gallery from './models/Gallery';
 
 const run = async () => {
   await mongoose.connect(config.db);
@@ -9,7 +10,7 @@ const run = async () => {
 
   try {
     await db.dropCollection('users');
-    await db.dropCollection('cocktails');
+    await db.dropCollection('galleries');
   } catch (error) {
     console.log('Collection did not present');
   }
@@ -29,6 +30,29 @@ const run = async () => {
       avatar: 'fixtures/user2.png',
       role: 'user',
       token: randomUUID(),
+    },
+  );
+
+  await Gallery.create(
+    {
+      user: admin,
+      title: 'Admin1',
+      image: 'fixtures/admin2.png',
+    },
+    {
+      user: admin,
+      title: 'Admin2',
+      image: 'fixtures/admin2.png',
+    },
+    {
+      user: user,
+      title: 'User1',
+      image: 'fixtures/user2.png',
+    },
+    {
+      user: user,
+      title: 'User2',
+      image: 'fixtures/user2.png',
     },
   );
 

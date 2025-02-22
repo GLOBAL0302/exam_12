@@ -12,7 +12,20 @@ galleriesRouter.get('/', async (req, res, next) => {
   try {
     let filter = id ? { user: id } : {};
     const galleries = await Gallery.find(filter).populate('user');
-    res.status(200).json(galleries);
+    res.status(200).send(galleries);
+  } catch (error) {
+    if (error instanceof Error.ValidationError) {
+      res.status(500).send(error);
+    }
+    next(error);
+  }
+});
+
+galleriesRouter.delete('/:galleryId', async (req, res, next) => {
+  try {
+    const { galleryId } = req.params;
+    const deletedGallery = await Gallery.deleteOne({ _id: galleryId });
+    res.status(200).json({ message: 'Gallery deleted successfully' });
   } catch (error) {
     if (error instanceof Error.ValidationError) {
       res.status(500).send(error);

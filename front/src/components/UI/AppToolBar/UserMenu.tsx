@@ -57,8 +57,7 @@ const UserMenu: React.FC<Props> = ({ user }) => {
         <CardMedia component="img" image={pic} style={{ width: '80px', height: '80px' }} title={user.displayName} />
       </Button>
       <Menu anchorEl={anchorEl} onClose={handleClose} keepMounted open={Boolean(anchorEl)}>
-        {user.role == 'user' && <MenuItem onClick={() => navigate('/myCocktails')}>My Cocktails</MenuItem>}
-        {user.role == 'user' && <MenuItem onClick={() => navigate('/addCocktail')}>Add Cocktails</MenuItem>}
+        <MenuItem onClick={() => navigate('/addGallery')}>Add Gallery</MenuItem>
         <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
       </Menu>
     </>
